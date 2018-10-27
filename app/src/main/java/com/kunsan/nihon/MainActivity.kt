@@ -1,5 +1,9 @@
 package com.kunsan.nihon
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModel
+import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -9,7 +13,10 @@ import com.blankj.utilcode.util.Utils
 import com.kunsan.nihon.adapter.WordAdapter
 import com.kunsan.nihon.bean.LocalWordBean
 import com.kunsan.nihon.bean.WordBean
+import com.kunsan.nihon.dao.Word
 import com.kunsan.nihon.utils.JsonConvertUtils
+import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 
 /**
@@ -17,6 +24,8 @@ import kotlinx.android.synthetic.main.activity_main.*
  */
 class MainActivity: AppCompatActivity() {
 
+
+    private lateinit var viewModel:WordViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,16 +37,41 @@ class MainActivity: AppCompatActivity() {
     }
 
     private fun initView() {
+       viewModel = getViewModel()
 
-
-        var bean = JsonConvertUtils.JsonToObject(this,"nihon_language.json",LocalWordBean::class.java)
+       viewModel.getAllCollectWords().observe(this, Observer<List<Word>> { t -> LogUtils.i("测试数据返回 "+t?.get(0)?.chinese) })
+        val bean = JsonConvertUtils.JsonToObject(this,"nihon_language.json",LocalWordBean::class.java)
 
         val list = bean.data
+        for (i in 0 until list.size){
+            list[i].wordId = i
+        }
 
-        LogUtils.i("json数据 "+list)
-        val adapter = WordAdapter(list)
+        val adapter = WordAdapter(list,object : WordAdapter.OnItemClickListener{
+            override fun invoke(wordBean: WordBean) {
+                LogUtils.i("单词ID "+wordBean.wordId)
+                Observable.just<WordBean>(wordBean)
+                        .subscribeOn(Schedulers.io())
+                        .subscribe { s -> viewModel.collectWord(s) }
+
+            }
+
+
+        })
         rv_main.layoutManager = LinearLayoutManager(this,RecyclerView.VERTICAL,false)
         rv_main.adapter = adapter
     }
 
+
+    fun getViewModel():WordViewModel{
+
+
+        return ViewModelProviders.of(this,object : ViewModelProvider.Factory{
+
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                val respository = WordRepository(this@MainActivity)
+                return WordViewModel(respository) as T
+            }
+        })[WordViewModel::class.java]
+    }
 }

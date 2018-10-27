@@ -1,5 +1,6 @@
 package com.kunsan.nihon.adapter
 
+import android.annotation.SuppressLint
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -11,10 +12,9 @@ import kotlinx.android.synthetic.main.item_nihon_word.view.*
 /**
  * Created by moge on 2018/10/24.
  */
-class WordAdapter(mData:List<WordBean>) : RecyclerView.Adapter<WordAdapter.VH>() {
+class WordAdapter(private var mData: List<WordBean>,var itemClick:OnItemClickListener) : RecyclerView.Adapter<WordAdapter.VH>() {
 
-    private var itemClick: (View, WordBean) -> Unit = { _, _ -> }
-    var mData:List<WordBean> =mData
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
 
@@ -26,7 +26,7 @@ class WordAdapter(mData:List<WordBean>) : RecyclerView.Adapter<WordAdapter.VH>()
 
         val entity:WordBean? = mData[position]
         if (entity != null){
-            holder.bindView(position,entity,itemClick)
+            holder.bindView(position,entity)
         }
           }
 
@@ -34,15 +34,28 @@ class WordAdapter(mData:List<WordBean>) : RecyclerView.Adapter<WordAdapter.VH>()
         return mData.size
     }
 
-
+     interface OnItemClickListener {
+        operator fun invoke(wordBean: WordBean)
+    }
 
     inner class VH(itemView: View) : RecyclerView.ViewHolder(itemView){
-        fun bindView(position: Int,item:WordBean,itemClick: (View, WordBean) -> Unit){
+        @SuppressLint("SetTextI18n")
+        fun bindView(position: Int, item:WordBean){
 
             with(item){
                 kotlin.with(itemView) {
-                    tv_word_japanese.text = japanese
-                    tv_word_chinese.text = chinese
+                    tv_word_japanese.text = japanese +"    "+chinese
+                    checkbox.setOnClickListener {
+
+                        if (item.checked){
+                            checkbox.isChecked = false
+                            item.checked = false
+                        }else{
+                            checkbox.isChecked = true
+                            item.checked = true
+                        }
+                        itemClick(item)
+                    }
                 }
             }
         }
