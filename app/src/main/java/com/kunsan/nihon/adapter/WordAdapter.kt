@@ -47,13 +47,7 @@ class WordAdapter(private var mData: List<WordBean>,var itemClick:OnItemClickLis
                     tv_word_japanese.text = japanese +"    "+chinese
                     checkbox.setOnClickListener {
 
-                        if (item.checked){
-                            checkbox.isChecked = false
-                            item.checked = false
-                        }else{
-                            checkbox.isChecked = true
-                            item.checked = true
-                        }
+                        item.checked = !item.checked
                         itemClick(item)
                     }
                 }

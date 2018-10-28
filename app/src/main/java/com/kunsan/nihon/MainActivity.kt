@@ -42,7 +42,9 @@ class MainActivity: AppCompatActivity() {
     private fun initView() {
        viewModel = getViewModel()
 
-       viewModel.getAllCollectWords().observe(this, Observer<List<Word>> { t -> LogUtils.i("测试数据返回 "+t?.get(0)?.chinese) })
+       viewModel.getAllCollectWords().observe(this, Observer<List<Word>> { t ->
+
+       })
         val bean = JsonConvertUtils.JsonToObject(this,"nihon_language.json",LocalWordBean::class.java)
 
         val list = bean.data
@@ -52,11 +54,17 @@ class MainActivity: AppCompatActivity() {
 
         val adapter = WordAdapter(list,object : WordAdapter.OnItemClickListener{
             override fun invoke(wordBean: WordBean) {
-                LogUtils.i("单词ID "+wordBean.wordId)
+
                 Observable.just<WordBean>(wordBean)
                         .subscribeOn(Schedulers.io())
-                        .subscribe { s -> viewModel.collectWord(s) }
+                        .subscribe { s ->
+                            if (wordBean.checked){
+                                viewModel.unCollectWord(s)
+                            }else{
+                                viewModel.collectWord(s)
 
+                            }
+                        }
             }
 
 

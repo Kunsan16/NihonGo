@@ -20,4 +20,10 @@ class WordViewModel constructor(var wordRepository: WordRepository) : BaseViewMo
         wordRepository.insertWord(word)
     }
 
+    fun unCollectWord(word: WordBean){
+
+        wordRepository.deleteWord(word)
+
+    }
+
 }
