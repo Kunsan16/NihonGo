@@ -12,6 +12,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20.0dip"
+        app:backgroundTint="#30469b"
+        app:borderWidth="0.0dip"
+        app:elevation="5.0dip"
+        app:fabSize="normal"
+        app:layout_anchorGravity="right|bottom"
+        app:pressedTranslationZ="10.0dip"
+        app:rippleColor="#a6a6a6"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+      />
 
 </android.support.constraint.ConstraintLayout>

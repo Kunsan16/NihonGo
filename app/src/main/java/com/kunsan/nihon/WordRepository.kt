@@ -27,6 +27,6 @@ open class WordRepository constructor(context: Context): BaseRepository(){
         word1.chinese = word.chinese
         word1.id = word.wordId
         word1.japanese = word.japanese
-         dbHelper.getWordDao().insert(word1)
+        dbHelper.getWordDao().insert(word1)
     }
 }

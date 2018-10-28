@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.Utils
 import com.kunsan.nihon.adapter.WordAdapter
+import com.kunsan.nihon.app.ui.CollectActivity
 import com.kunsan.nihon.bean.LocalWordBean
 import com.kunsan.nihon.bean.WordBean
 import com.kunsan.nihon.dao.Word
@@ -34,6 +35,8 @@ class MainActivity: AppCompatActivity() {
 
         LogUtils.getConfig().setSingleTagSwitch(true).setBorderSwitch(false)
         initView()
+
+        fab.setOnClickListener { CollectActivity.launch(this) }
     }
 
     private fun initView() {

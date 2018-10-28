@@ -33,7 +33,6 @@ object JsonConvertUtils{
             line = bufferedReader.readLine() ?: break
             stringBuilder.append(line)
         }
-        Log.d("json字符串",stringBuilder.toString())
         return stringBuilder.toString()
 
     }

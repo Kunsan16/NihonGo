@@ -9,16 +9,14 @@ import com.kunsan.nihon.dao.Word
 /**
  * Created by moge on 2018/10/27.
  */
-class WordViewModel constructor( var wordRepository: WordRepository) :BaseViewModel(wordRepository){
+class WordViewModel constructor(var wordRepository: WordRepository) : BaseViewModel(wordRepository) {
 
 
+    fun getAllCollectWords(): LiveData<List<Word>> {
+        return wordRepository.getAllWords()
+    }
 
-        fun getAllCollectWords():LiveData<List<Word>>{
-            return wordRepository.getAllWords()
-        }
-
-    fun collectWord(word: WordBean){
-
+    fun collectWord(word: WordBean) {
         wordRepository.insertWord(word)
     }
 
