@@ -24,7 +24,7 @@ abstract class BaseAdapter<T> : PagedListAdapter<Bean, BaseViewHolder>(diffCallb
     }
 
     override fun getItemCount(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return 0
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
